@@ -61,4 +61,3 @@ impl<T> IntoIterator for Arr2<T> {
         self.v.into_iter()
     }
 }
-

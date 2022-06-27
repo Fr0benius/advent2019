@@ -3,7 +3,7 @@ pub fn run(input: &str) -> (i64, i64) {
     (0, 0)
 }
 
-#[cfg(test)] 
+#[cfg(test)]
 pub mod tests {
     #[test]
     fn check_sample() {

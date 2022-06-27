@@ -9,15 +9,16 @@
 #![allow(clippy::similar_names)]
 #![allow(clippy::needless_range_loop)]
 #![allow(clippy::many_single_char_names)]
-
 #![warn(clippy::if_same_then_else)]
 
-pub mod parsing;
-pub mod dir;
-pub mod num;
-pub mod matching;
-pub mod shunting_yard;
 pub mod arr2;
+pub mod dir;
+pub mod matching;
+pub mod num;
+pub mod parsing;
+pub mod shunting_yard;
+
+pub mod intcode;
 
 pub mod day01;
 pub mod day02;
@@ -41,6 +42,6 @@ pub mod day19;
 pub mod day20;
 pub mod day21;
 pub mod day22;
-pub mod day23; 
-pub mod day24; 
-pub mod day25; 
+pub mod day23;
+pub mod day24;
+pub mod day25;
