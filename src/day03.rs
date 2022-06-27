@@ -1,4 +1,4 @@
-use std::collections::{HashMap, HashSet};
+use std::collections::HashMap;
 
 pub fn run(input: &str) -> (i64, i64) {
     let (a, b) = {

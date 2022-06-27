@@ -21,8 +21,8 @@ fn simulate(init: &[i64], noun: i64, verb: i64) -> i64 {
     let mut data = init.to_vec();
     data[1] = noun;
     data[2] = verb;
-    let mut state = State { instr: 0, data };
-    while state.step() {}
+    let mut state = State::new(data);
+    state.run_until_halt();
     state.data[0]
 }
 
