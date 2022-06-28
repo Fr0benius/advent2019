@@ -32,6 +32,14 @@ pub fn gcd(mut a: i64, mut b: i64) -> i64 {
     a
 }
 
+pub fn lcm(a: i64, b: i64) -> i64 {
+    if (a, b) == (0, 0) {
+        0
+    } else {
+        a / gcd(a, b) * b
+    }
+}
+
 /// Find a number that is a mod n and b mod m.
 /// Requires n, m are relatively prime and positive.
 pub fn cr_theorem(mut a: i64, n: i64, mut b: i64, m: i64) -> i64 {
