@@ -23,19 +23,13 @@ pub fn mod_inv(mut a: i64, m: i64) -> i64 {
 }
 
 pub fn gcd(mut a: i64, mut b: i64) -> i64 {
-    if a < 0 {
-        a = -a;
-    }
-    if b < 0 {
-        b = -b;
-    }
-    while a > 0 {
-        if a < b {
-            std::mem::swap(&mut a, &mut b);
-        }
+    a = a.abs();
+    b = b.abs();
+    while b > 0 {
         a %= b;
+        (a, b) = (b, a);
     }
-    b
+    a
 }
 
 /// Find a number that is a mod n and b mod m.
