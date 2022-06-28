@@ -9,6 +9,8 @@
 #![allow(clippy::similar_names)]
 #![allow(clippy::needless_range_loop)]
 #![allow(clippy::many_single_char_names)]
+#![allow(clippy::module_name_repetitions)]
+
 #![warn(clippy::if_same_then_else)]
 
 pub mod arr2;
@@ -19,6 +21,8 @@ pub mod parsing;
 pub mod shunting_yard;
 
 pub mod intcode;
+pub mod permutations;
+pub mod counter;
 
 pub mod day01;
 pub mod day02;

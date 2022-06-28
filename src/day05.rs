@@ -4,11 +4,11 @@ use crate::{parsing::Gather, intcode::State};
 
 pub fn run(input: &str) -> (i64, i64) {
     let init: Vec<i64> = input.trim().split(',').gather();
-    let mut state = State::new(init.clone()).with_inputs(once(1));
+    let mut state = State::new(&init).with_inputs(once(1));
     state.run_until_halt();
     let part1 = *state.outputs.back().unwrap();
 
-    state = State::new(init).with_inputs(once(5));
+    state = State::new(&init).with_inputs(once(5));
     state.run_until_halt();
     let part2 = *state.outputs.back().unwrap();
     (part1, part2)

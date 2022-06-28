@@ -3,12 +3,12 @@ use crate::parsing::Gather;
 use crate::intcode::State;
 
 pub fn run(input: &str) -> (i64, i64) {
-    let init: Vec<i64> = input.trim().split(',').gather();
-    let part1 = simulate(&init, 12, 2);
+    let mut data: Vec<i64> = input.trim().split(',').gather();
+    let part1 = simulate(&mut data, 12, 2);
     let mut part2 = 0;
     'a: for noun in 0..100 {
         for verb in 0..100 {
-            if simulate(&init, noun, verb) == 19_690_720 {
+            if simulate(&mut data, noun, verb) == 19_690_720 {
                 part2 = 100 * noun + verb;
                 break 'a;
             }
@@ -17,13 +17,12 @@ pub fn run(input: &str) -> (i64, i64) {
     (part1, part2)
 }
 
-fn simulate(init: &[i64], noun: i64, verb: i64) -> i64 {
-    let mut data = init.to_vec();
+fn simulate(data: &mut [i64], noun: i64, verb: i64) -> i64 {
     data[1] = noun;
     data[2] = verb;
     let mut state = State::new(data);
     state.run_until_halt();
-    state.data[0]
+    state.peek(0)
 }
 
 #[cfg(test)]
