@@ -3,6 +3,7 @@
 #![allow(clippy::must_use_candidate)]
 #![allow(clippy::cast_sign_loss)]
 #![allow(clippy::cast_possible_truncation)]
+#![allow(clippy::cast_possible_wrap)]
 #![allow(clippy::cast_lossless)]
 #![allow(clippy::redundant_closure_for_method_calls)]
 #![allow(clippy::wildcard_imports)]
