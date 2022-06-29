@@ -10,6 +10,7 @@
 #![allow(clippy::needless_range_loop)]
 #![allow(clippy::many_single_char_names)]
 #![allow(clippy::module_name_repetitions)]
+#![allow(clippy::type_complexity)]
 
 #![warn(clippy::if_same_then_else)]
 

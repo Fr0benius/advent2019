@@ -1,5 +1,6 @@
 use std::collections::{HashMap, VecDeque};
 
+use InstructionStatus::{AwaitingInput, Done, Success};
 use Op::{Add, AdjustRelBase, Eql, Halt, Input, JumpIfFalse, JumpIfTrue, Lt, Mul, Output};
 
 use crate::parsing::Gather;
@@ -35,6 +36,13 @@ impl From<i64> for Op {
     }
 }
 
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+pub enum InstructionStatus {
+    Success,
+    AwaitingInput,
+    Done,
+}
+
 #[derive(Clone, Debug)]
 pub struct State {
     instr: usize,
@@ -66,7 +74,7 @@ impl State {
         self.inputs.push_back(input);
     }
 
-    fn step(&mut self) -> bool {
+    fn step(&mut self) -> InstructionStatus {
         let i = self.instr;
         let code = self.peek(i);
         let op: Op = (code % 100).into();
@@ -78,41 +86,60 @@ impl State {
         match op {
             Add | Mul | Lt | Eql => {
                 self.bin_op(op, modes);
-                true
+                Success
             }
             Input => {
-                let input = self.inputs.pop_front().unwrap();
-                self.set(i + 1, modes[0], input);
-                self.instr += 2;
-                true
+                if let Some(input) = self.inputs.pop_front() {
+                    self.set(i + 1, modes[0], input);
+                    self.instr += 2;
+                    Success
+                } else {
+                    AwaitingInput
+                }
             }
             Output => {
-                self.outputs.push_back(self.get( i+ 1, modes[0]));
+                self.outputs.push_back(self.get(i + 1, modes[0]));
                 self.instr += 2;
-                true
+                Success
             }
             JumpIfTrue | JumpIfFalse => {
                 self.jump(op, modes);
-                true
+                Success
             }
             AdjustRelBase => {
-                let adj = self.get(i+ 1, modes[0]);
+                let adj = self.get(i + 1, modes[0]);
                 self.relative_base += adj;
                 self.instr += 2;
-                true
+                Success
             }
-            Halt => false,
+            Halt => Done,
+        }
+    }
+
+    pub fn run_until_input(&mut self) -> bool {
+        loop {
+            match self.step() {
+                Success => continue,
+                AwaitingInput => return true,
+                Done => return false,
+            }
         }
     }
     pub fn run_until_halt(&mut self) {
-        while self.step() {}
+        loop {
+            match self.step() {
+                Success => continue,
+                AwaitingInput => panic!("Expecting an input"),
+                Done => break,
+            }
+        }
     }
     pub fn get_output(&mut self) -> Option<i64> {
         loop {
             if let Some(output) = self.outputs.pop_front() {
                 return Some(output);
             }
-            if !self.step() {
+            if self.step() != Success {
                 return None;
             }
         }
