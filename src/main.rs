@@ -1,6 +1,6 @@
 use advent2019::*;
 
 fn main() {
-    // dbg!(day16::run(include_str!("../input/16-sample.txt")));
-    dbg!(day16::run(include_str!("../input/16.txt")));
+    // dbg!(day17::run(include_str!("../input/17-sample.txt")));
+    dbg!(day17::run(include_str!("../input/17.txt")));
 }

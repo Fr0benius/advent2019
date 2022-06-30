@@ -65,6 +65,9 @@ impl State {
     pub fn peek(&self, i: usize) -> i64 {
         self.data.get(&i).copied().unwrap_or_default()
     }
+    pub fn poke(&mut self, i: usize, val: i64) {
+        self.data.insert(i, val);
+    }
     #[must_use]
     pub fn with_inputs<T: Iterator<Item = i64>>(mut self, inputs: T) -> Self {
         self.inputs.extend(inputs);
