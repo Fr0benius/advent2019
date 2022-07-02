@@ -1,4 +1,4 @@
-use std::ops::Index;
+use std::ops::{Index, IndexMut};
 #[derive(Clone, PartialEq, Eq, Hash, Debug)]
 pub struct Arr2<T> {
     n: usize,
@@ -31,6 +31,17 @@ impl<T> Arr2<T> {
     pub fn col(&self, j: usize) -> impl Iterator<Item = &T> {
         (0..self.n).map(move |i| &self[i][j])
     }
+
+    pub fn map<U, F: FnMut(T) -> U>(self, mut f: F) -> Arr2<U> {
+        let (n, m) = self.dims();
+        let mut iter = self.into_iter();
+        Arr2::from_fn(n, m, move |_, _| f(iter.next().unwrap()))
+    }
+
+    pub fn enumerate(&self) -> impl Iterator<Item = ((usize, usize), &T)> {
+        let m = self.dims().1;
+        self.iter().enumerate().map(move |(k, x)| ((k / m, k % m), x))
+    }
 }
 
 impl<T: Clone> Arr2<T> {
@@ -47,8 +58,27 @@ impl<T> Index<usize> for Arr2<T> {
     type Output = [T];
 
     fn index(&self, i: usize) -> &Self::Output {
-        assert!(i < self.n);
         &self.v[i * self.m..(i + 1) * self.m]
+    }
+}
+
+impl<T> IndexMut<usize> for Arr2<T> {
+    fn index_mut(&mut self, i: usize) -> &mut Self::Output {
+        &mut self.v[i * self.m..(i + 1) * self.m]
+    }
+}
+
+impl<T> Index<(usize, usize)> for Arr2<T> {
+    type Output = T;
+
+    fn index(&self, (i, j): (usize, usize)) -> &Self::Output {
+        &self.v[i * self.m + j]
+    }
+}
+
+impl<T> IndexMut<(usize, usize)> for Arr2<T> {
+    fn index_mut(&mut self, (i, j): (usize, usize)) -> &mut Self::Output {
+        &mut self.v[i * self.m + j]
     }
 }
 
@@ -59,5 +89,14 @@ impl<T> IntoIterator for Arr2<T> {
 
     fn into_iter(self) -> Self::IntoIter {
         self.v.into_iter()
+    }
+}
+
+impl<T: Clone> From<Vec<Vec<T>>> for Arr2<T> {
+    fn from(v: Vec<Vec<T>>) -> Self {
+        let n = v.len();
+        assert!(n > 0, "Vector cannot be empty");
+        let m = v[0].len();
+        Self::from_raw(n, m, v.concat())
     }
 }

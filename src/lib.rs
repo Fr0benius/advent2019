@@ -12,6 +12,7 @@
 #![allow(clippy::many_single_char_names)]
 #![allow(clippy::module_name_repetitions)]
 #![allow(clippy::type_complexity)]
+#![allow(clippy::maybe_infinite_iter)]
 
 #![warn(clippy::if_same_then_else)]
 
