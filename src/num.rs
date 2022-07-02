@@ -19,7 +19,12 @@ pub fn mod_inv(mut a: i64, m: i64) -> i64 {
     if a < 0 {
         a += m;
     }
-    extended_euclid(a, m).0
+    let res = extended_euclid(a, m).0 % m;
+    if res < 0 {
+        res + m
+    } else {
+        res
+    }
 }
 
 pub fn gcd(mut a: i64, mut b: i64) -> i64 {
