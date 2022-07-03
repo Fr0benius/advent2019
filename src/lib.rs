@@ -23,9 +23,11 @@ pub mod num;
 pub mod parsing;
 pub mod shunting_yard;
 
-pub mod intcode;
 pub mod permutations;
 pub mod counter;
+pub mod cellular_auto;
+
+pub mod intcode;
 
 pub mod day01;
 pub mod day02;
